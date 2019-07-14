@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>
+      netcoreapp2.0;
+      net462;
+    </TargetFrameworks>
+    <Platforms>x64</Platforms>
+    <AssemblyVersion>1.0.12.0</AssemblyVersion>
+    <FileVersion>1.0.12.0</FileVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Company>Itron</Company>
+    <Authors>Jazeem Azeez</Authors>
+    <Description>Provide Distributed Caching to be used by IHC &amp; related core services</Description>
+    <Version>1.0.12</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.0|AnyCPU'">
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.0|x64'">
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.0|x64'">
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+
+    <PackageReference Include="Ninject" Version="3.2.2" /> 
+    <PackageReference Include="WindowsAzure.ServiceBus" Version="4.1.9" />
+  </ItemGroup>
+    <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.Management.ServiceBus.Fluent" Version="1.20.0" />
+    <PackageReference Include="Microsoft.Azure.ServiceBus" Version="3.4.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="RabbitMQ.Client" Version="5.1.0" />
+    <PackageReference Include="System.Collections" Version="4.3.0" /> 
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Channels\WebSockets\" />
+    <Folder Include="Channels\Pipes\" />
+  </ItemGroup>
+
+</Project>
