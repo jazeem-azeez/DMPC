@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DMC.Logging;
 
-public class NonLockingRuntimeWrapper<T>
+public class NonLockingRuntimeWrapper<T> : INonLockingRuntimeWrapper
 {
     private volatile ConcurrentDictionary<string, AutoResetEvent> _operationsInProgress = new ConcurrentDictionary<string, AutoResetEvent>();
     private readonly ICacheLogger _cacheLogger;
