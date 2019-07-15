@@ -19,7 +19,7 @@ namespace DMC.Injection
         public override void Load() => this.Bind();
         private void Bind()
         {
-            this.Kernel.Bind(typeof(ICacheProvider<>)).To(typeof(BasicCacheProvider<>)).InSingletonScope();
+            this.Kernel.Bind(typeof(ICacheProvider<>)).To(typeof(CacheProviderV1<>)).InSingletonScope();
             this.Kernel.Bind<IBackPlane>().To<BaseBackPlane>().InSingletonScope();
             this.Kernel.Bind<ICommunicationChannel>().To<RmqChannel>();
             this.Kernel.Bind<ICommunicationChannel>().To<ServiceBusChannel>();

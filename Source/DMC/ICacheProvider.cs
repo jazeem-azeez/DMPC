@@ -9,23 +9,21 @@ namespace DMC
     {
         Task DispatchEvent(EventMessage eventMessage);
 
-        T Get(string key);
+        T Get(string key, bool autoPropogateOrCachingEnabled=true);      
 
-        TimeSpan GetDefaultExpiry();
+        T GetOrSet(string key, Func<T> getItemCallBack, bool autoPropogateOrCachingEnabled = true);
 
-        T GetOrSet(string key, Func<T> getItemCallBack);
+        T GetOrSet(string key, Func<T> getItemCallBack, TimeSpan? expiry, bool autoPropogateOrCachingEnabled = true);
 
-        T GetOrSet(string key, Func<T> getItemCallBack, TimeSpan? expiry);
+        Task<T> GetOrSetAsync(string key, Func<Task<T>> getItemCallBack, TimeSpan? expiry,bool autoPropogateOrCachingEnabled= true);
 
-        Task<T> GetOrSetAsync(string key, Func<Task<T>> getItemCallBack, TimeSpan? expiry);
+        Task<T> GetOrSetAsync(string key, Func<Task<T>> getItemCallBack, bool autoPropogateOrCachingEnabled = true);
 
-        Task<T> GetOrSetAsync(string key, Func<Task<T>> getItemCallBack);
+        bool Set(string key, T value, TimeSpan? expiry,int level=0, bool autoPropogateOrCachingEnabled = true); 
 
-        bool Set(string key, T value, TimeSpan? expiry);
+        bool Update(string key, T data, TimeSpan? expiry = null, T oldData = default(T), bool autoPropogateOrCachingEnabled = true);
 
-        bool Update(string key, T data, TimeSpan? expiry = null, T oldData = default(T));
-
-        bool Update(List<string> keys, T data, TimeSpan? expiry = null, T oldData = default(T));
+        bool Update(List<string> keys, T data, TimeSpan? expiry = null, T oldData = default(T), bool autoPropogateOrCachingEnabled = true);
          
     }
 }

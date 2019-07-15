@@ -27,6 +27,7 @@ namespace DMC
 
         RabbitConnectionConfiguration RabbitConnection { get; }
         bool IsRabbitCommnunicationChannelEnabled { get; }
-        bool IsServiceBusCommnunicationChannelEnabled { get; } 
+        bool IsServiceBusCommnunicationChannelEnabled { get; }
+        string RedisConnectionString { get; }
     }
 }

@@ -17,5 +17,6 @@ namespace DMC.CacheContext
 
         public bool IsCacheEnabled { get; set; }
         public Guid CacheGuid { get; set; }
+        public bool AutoPropogateOrCachingEnabled { get; set; }
     }
 }

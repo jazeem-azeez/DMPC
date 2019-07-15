@@ -40,7 +40,6 @@ public class NonLockingRuntimeWrapper<T> : INonLockingRuntimeWrapper
         {
             handle.Set();
             this._cacheLogger.LogException(ex);
-
             throw;
         }
         finally

@@ -1,34 +1,54 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq;
+
 using DMC.Implementations;
+using DMC.Logging;
 using DMC.Models;
 
 namespace DMC.CacheProvider.CacheStores
 {
-    public class InMemStore<T>:ICacheStores<T>
+    public class InMemStore<T> : ICacheStores<T>
     {
-        private volatile ConcurrentDictionary<string, StoreWrapper<T>> _storeCollection = new ConcurrentDictionary<string, StoreWrapper<T>>();
-        private NonLockingRuntimeWrapper<T> _nonLockingRuntimeWrapper;
-        public InMemStore()
-        {
+        private readonly ICacheConfig _cacheConfig;
+        private readonly ICacheLogger _cacheLogger; 
+        private readonly ConcurrentDictionary<string, StoreWrapper<T>> _storeEntires = new ConcurrentDictionary<string, StoreWrapper<T>>();
 
+
+        public InMemStore(ICacheConfig cacheConfig, ICacheLogger cacheLogger)
+        {
+            this._cacheConfig = cacheConfig;
+            this._cacheLogger = cacheLogger;
         }
 
-        public bool Compact() => throw new NotImplementedException();
-        public T Get(string key) => throw new NotImplementedException();
+        public bool Compact()
+        {
+            string[] keys = this._storeEntires.Keys.ToArray();
+            for (int i = 0; i < keys.Length; i++)
+            {
+                this._storeEntires.TryGetValue(keys[i], out StoreWrapper<T> temp);
+                
+            }
+            return true;
+        }
+
         public TimeSpan GetDefaultExpiry() => throw new NotImplementedException();
-        public T GetOrSet(string key, Func<T> getItemCallBack) => throw new NotImplementedException();
-        public T GetOrSet(string key, Func<T> getItemCallBack, TimeSpan? expiry) => throw new NotImplementedException();
-        public Task<T> GetOrSetAsync(string key, Func<Task<T>> getItemCallBack, TimeSpan? expiry) => throw new NotImplementedException();
-        public Task<T> GetOrSetAsync(string key, Func<Task<T>> getItemCallBack) => throw new NotImplementedException();
-        public bool Invalidate(string key) => throw new NotImplementedException();
-        public bool Invalidate(List<string> keys) => throw new NotImplementedException();
-        public bool Invalidate(List<string> keys, List<string> filters) => throw new NotImplementedException();
-        public bool Set(string key, T value, TimeSpan? expiry) => throw new NotImplementedException();
-        public bool Update(string key, T data, TimeSpan? expiry = null, T oldData = default(T)) => throw new NotImplementedException();
-        public bool Update(List<string> keys, T data, TimeSpan? expiry = null, T oldData = default(T)) => throw new NotImplementedException();
+
+        public StoreWrapper<T> GetEntry(string key)
+        {
+            StoreWrapper<T> result = default(StoreWrapper<T>);
+            if (this._storeEntires.ContainsKey(key))
+            {
+                result = this._storeEntires[key];
+            }
+            return result;
+        }
+
+        public bool RemoveEntries(List<string> keys) => keys.Select(val => this.RemoveEntry(val)).Aggregate((cur, prev) => cur && prev);
+
+        public bool RemoveEntry(string key) => this._storeEntires.TryRemove(key, out StoreWrapper<T> result);
+
+        public bool SetEntry(string key, StoreWrapper<T> value) => this._storeEntires.AddOrUpdate(key, value, (curkey, val) => value) != null;
     }
 }
