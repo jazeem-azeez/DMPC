@@ -1,12 +1,5 @@
-﻿#if NETCOREAPP2_0
-using Microsoft.Azure.ServiceBus;
-
-#endif
-#if NET462
-using Microsoft.ServiceBus;
-
-#endif
-
+﻿using Microsoft.Azure.ServiceBus;
+ 
 using DMC.Models;
 
 namespace DMC
@@ -15,14 +8,8 @@ namespace DMC
     {
         bool BackPlaneEnabled { get; }
         string ServiceBusConnectionString { get; }
-        string CacheBackPlaneChannel { get; }
-#if NETCOREAPP2_0
-        RetryPolicy RetryPolicy { get; }
-#endif
-#if NET462
-        RetryPolicy RetryPolicy { get; }
-
-#endif
+        string CacheBackPlaneChannel { get; } 
+        RetryPolicy RetryPolicy { get; } 
         string ListenerInstanceId { get; }
 
         RabbitConnectionConfiguration RabbitConnection { get; }

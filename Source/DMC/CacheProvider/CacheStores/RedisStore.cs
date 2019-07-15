@@ -9,19 +9,20 @@ using StackExchange.Redis;
 
 namespace DMC.CacheProvider.CacheStores
 {
-    internal class RedisStorage<T> : ICacheStores<T>
+    internal class RedisStore<T> : ICacheStores<T>
     {
         /// <summary>  </summary>
         private readonly IDatabase DB;
         private readonly ICacheConfig _cacheConfig;
         private readonly ICacheLogger _cacheLogger;
-        NonLockingRuntimeWrapper<T> _nonLockingRuntimeWrapper;
-        public RedisStorage(IRedisFactory redisFactory, ICacheConfig cacheConfig, ICacheLogger cacheLogger)
+        private readonly NonLockingRuntimeWrapper<T> _nonLockingRuntimeWrapper;
+        public RedisStore(IRedisFactory redisFactory, ICacheConfig cacheConfig, ICacheLogger cacheLogger)
         {
             this._cacheConfig = cacheConfig;
             this._cacheLogger = cacheLogger;
-            this.DB = redisFactory.Connection?.GetDatabase();
-            _nonLockingRuntimeWrapper = new NonLockingRuntimeWrapper<T>(_cacheLogger);
+            long index = (typeof(T).FullName.Select(c => Convert.ToInt64(c)).Aggregate((cur, next) => cur + next)) % 16;
+            this.DB = redisFactory.Connection?.GetDatabase((int)index);
+            this._nonLockingRuntimeWrapper = new NonLockingRuntimeWrapper<T>(this._cacheLogger);
         }
 
         public bool Compact() => throw new NotSupportedException();

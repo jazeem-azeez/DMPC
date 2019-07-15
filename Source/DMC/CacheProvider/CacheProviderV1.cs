@@ -26,7 +26,7 @@ namespace DMC.Implementations
         private readonly int maxStoreIndex;
         private readonly int minStoreIndex;
 
-        public CacheProviderV1(SortedDictionary<int, ICacheStores<T>> cacheStoreCollection,
+        public CacheProviderV1(IStoreCollectionProvider<T> storeCollectionProvider,
                                 ICacheConfig cacheConfig,
                                 IBackPlane backPlane,
                                 ICacheLogger logger,
@@ -34,9 +34,9 @@ namespace DMC.Implementations
         {
             this._cacheLogger = logger;
             this._cacheContextManager = cacheContextManager;
-            this._cacheStoreCollection = cacheStoreCollection;
+            this._cacheStoreCollection = storeCollectionProvider.GetCacheStoreCollection() ;
             this.minStoreIndex = 0;
-            this.maxStoreIndex = cacheStoreCollection.Count;
+            this.maxStoreIndex = _cacheStoreCollection.Count;
             this._cacheConfig = cacheConfig;
             this.FilterName = typeof(T).FullName;
             this._backPlane = backPlane;
@@ -113,6 +113,7 @@ namespace DMC.Implementations
             try
             {
                 item = this.Get(key, autoPropogateOrCachingEnabled);
+
                 bool isCacheEnabled = this.IsCacheEnabled;
 
                 this._cacheLogger.LogAsync($"GetOrSetAsync - shouldByPassItemCheck {isCacheEnabled}", EventLevel.Verbose);

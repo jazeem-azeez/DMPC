@@ -2,26 +2,21 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-#if NETCOREAPP2_0
-using Microsoft.Azure.ServiceBus;
 
-#endif
-
-#if NET462
-using Microsoft.ServiceBus.Messaging;
-#endif
-using Newtonsoft.Json;
 using DMC.Channels.RabbitMq;
 using DMC.Models;
+
+using Microsoft.Azure.ServiceBus;
+
+using Newtonsoft.Json;
+
 using RabbitMQ.Client.Events;
 
 namespace DMC.Channels.EventMessageHandler
 {
     public class MessageEncodingHelper
     {
-      
-
-       
+        public static byte[] GetBytes(string str) => Encoding.UTF8.GetBytes(str);
 
         public static EventMessage GetMessage(BasicDeliverEventArgs message)
         {
@@ -29,6 +24,17 @@ namespace DMC.Channels.EventMessageHandler
             {
                 EventMessage msg = JsonConvert.DeserializeObject<EventMessage>(GetString(message.Body));
                 GetProperties(message.BasicProperties.Headers, msg.EventHeaders);
+                return msg;
+            }
+            return null;
+        }
+
+        public static EventMessage GetMessage(Message message)
+        {
+            if (message != null)
+            {
+                EventMessage msg = JsonConvert.DeserializeObject<EventMessage>(GetString(message.Body));
+                GetProperties(message.UserProperties, msg.EventHeaders);
                 return msg;
             }
             return null;
@@ -46,7 +52,6 @@ namespace DMC.Channels.EventMessageHandler
                 }
             }
 
-
             msg.BasicProperties.CorrelationId = Guid.NewGuid().ToString();
 
             return msg;
@@ -54,7 +59,7 @@ namespace DMC.Channels.EventMessageHandler
 
         public static string GetString(Stream stream)
         {
-            using (var reader = new StreamReader(stream, Encoding.UTF8))
+            using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
             {
                 return reader.ReadToEnd();
             }
@@ -62,11 +67,7 @@ namespace DMC.Channels.EventMessageHandler
 
         public static string GetString(byte[] bytes) => Encoding.UTF8.GetString(bytes);
 
-        public static byte[] GetBytes(string str) => Encoding.UTF8.GetBytes(str);
 
-
-
-#if NETCOREAPP2_0
         internal static Message GetServiceBusMessage(EventMessage eventMessage)
         {
             Message msg = new Message(GetBytes(JsonConvert.SerializeObject(eventMessage)));
@@ -83,52 +84,9 @@ namespace DMC.Channels.EventMessageHandler
             msg.CorrelationId = Guid.NewGuid().ToString();
 
             return msg;
-        } 
-
-        public static EventMessage GetMessage(Message message)
-        {
-            if (message != null)
-            {
-                EventMessage msg = JsonConvert.DeserializeObject<EventMessage>(GetString(message.Body));
-                 GetProperties(message.UserProperties, msg.EventHeaders);
-                return msg;
-            }
-            return null;
         }
-#endif
-#if NET462
+         
 
-        public static EventMessage GetMessage(BrokeredMessage message)
-        {
-            if (message != null)
-            {
-                
-                EventMessage msg = JsonConvert.DeserializeObject<EventMessage>(GetString(message.GetBody<Stream>()));
-                GetProperties(message.Properties, msg.EventHeaders);
-                return msg;
-
-            }
-            return null;
-        }
-        internal static BrokeredMessage GetServiceBusMessage(EventMessage eventMessage)
-        {
-            BrokeredMessage msg = new BrokeredMessage(new MemoryStream(GetBytes(JsonConvert.SerializeObject(eventMessage))));
-
-            if (eventMessage.EventHeaders != null)
-            {
-                foreach (KeyValuePair<string, string> item in eventMessage.EventHeaders)
-                {
-                    msg.Properties.Add(item.Key, item.Value);
-                }
-            }
-
-            msg.MessageId = Guid.NewGuid().ToString();
-            msg.CorrelationId = Guid.NewGuid().ToString();
-
-            return msg;
-        }
-
-#endif
         private static Dictionary<string, string> GetProperties(IDictionary<string, object> headers, Dictionary<string, string> eventHeaders)
         {
             if (headers != null)
