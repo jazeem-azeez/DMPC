@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCore.ConsoleApp2", "Samp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureTests", "Test\FeatureTests\FeatureTests.csproj", "{D4B987D0-E795-474E-AC72-8CF4895D68FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunctionalityTests", "FunctionalityTests\FunctionalityTests.csproj", "{1692978E-7B03-4CA3-9803-9F36CF6E86FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunctionalityTests", "Test\FunctionalityTests\FunctionalityTests.csproj", "{1692978E-7B03-4CA3-9803-9F36CF6E86FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
