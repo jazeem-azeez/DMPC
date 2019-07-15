@@ -1,5 +1,5 @@
-# Distributed Multilevel Caching in Micro-services - Work in progress
+# Distributed Multilevel Caching in Micro-services - 
 
-## This written as sample 
+## Work in progress
 
 Clone and tinker with sample insde
