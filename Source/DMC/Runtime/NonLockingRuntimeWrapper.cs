@@ -4,47 +4,50 @@ using System.Threading;
 using System.Threading.Tasks;
 using DMC.Logging;
 
-public class NonLockingRuntimeWrapper<T> : INonLockingRuntimeWrapper
+namespace DMC.RunTime
 {
-    private volatile ConcurrentDictionary<string, AutoResetEvent> _operationsInProgress = new ConcurrentDictionary<string, AutoResetEvent>();
-    private readonly ICacheLogger _cacheLogger;
-
-    public string Name { get; private set; }
-
-    public NonLockingRuntimeWrapper(ICacheLogger cacheLogger)
+    public class NonLockingRuntimeWrapper<T> : INonLockingRuntimeWrapper
     {
-        this._cacheLogger = cacheLogger;
-        this.Name = typeof(T).FullName;
-    }
-    private AutoResetEvent GetKeyBasedResetEventHandle(string key)
-    {
+        private readonly ConcurrentDictionary<string, AutoResetEvent> _operationsInProgress = new ConcurrentDictionary<string, AutoResetEvent>();
+        private readonly ICacheLogger _cacheLogger;
 
-        if (this._operationsInProgress.ContainsKey(key) == false)
-        {
-            this._operationsInProgress.TryAdd(key, new AutoResetEvent(true));
-        }
+        public string Name { get; private set; }
 
-        return this._operationsInProgress[key];
-    }
-    public async Task<Tout> ThreadSafefWrapperAsync<Tout>(string operationKey, Func<AutoResetEvent, Task<Tout>> callback)
-    {
-        AutoResetEvent handle = this.GetKeyBasedResetEventHandle(operationKey);
-        handle.WaitOne();
-        handle.Reset();
-        try
+        public NonLockingRuntimeWrapper(ICacheLogger cacheLogger)
         {
-            Tout result = await callback(handle);
-            return result;
+            this._cacheLogger = cacheLogger;
+            this.Name = typeof(T).FullName;
         }
-        catch (Exception ex)
+        private AutoResetEvent GetKeyBasedResetEventHandle(string key)
         {
-            handle.Set();
-            this._cacheLogger.LogException(ex);
-            throw;
+
+            if (this._operationsInProgress.ContainsKey(key) == false)
+            {
+                this._operationsInProgress.TryAdd(key, new AutoResetEvent(true));
+            }
+
+            return this._operationsInProgress[key];
         }
-        finally
+        public async Task<Tout> ThreadSafefWrapperAsync<Tout>(string operationKey, Func<AutoResetEvent, Task<Tout>> callback)
         {
-            handle.Set();
+            AutoResetEvent handle = this.GetKeyBasedResetEventHandle(operationKey);
+            handle.WaitOne();
+            handle.Reset();
+            try
+            {
+                Tout result = await callback(handle);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                handle.Set();
+                this._cacheLogger.LogException(ex);
+                throw;
+            }
+            finally
+            {
+                handle.Set();
+            }
         }
     }
 }
