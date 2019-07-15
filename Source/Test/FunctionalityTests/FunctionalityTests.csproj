@@ -7,6 +7,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="BackPlane\**" />
+    <Compile Remove="CacheContext\**" />
+    <Compile Remove="CacheProvider\**" />
+    <Compile Remove="Logging\**" />
+    <Compile Remove="Runtime\**" />
+    <EmbeddedResource Remove="BackPlane\**" />
+    <EmbeddedResource Remove="CacheContext\**" />
+    <EmbeddedResource Remove="CacheProvider\**" />
+    <EmbeddedResource Remove="Logging\**" />
+    <EmbeddedResource Remove="Runtime\**" />
+    <None Remove="BackPlane\**" />
+    <None Remove="CacheContext\**" />
+    <None Remove="CacheProvider\**" />
+    <None Remove="Logging\**" />
+    <None Remove="Runtime\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="Moq" Version="4.12.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.3.2" />
@@ -14,11 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DMC\DMC.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="BackPlane\" />
+    <ProjectReference Include="..\..\DMC\DMC.csproj" />
   </ItemGroup>
 
 </Project>
