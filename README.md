@@ -2,4 +2,4 @@
 
 ## Work in progress
 
-Clone and tinker with sample insde
+Clone and tinker with sample code
