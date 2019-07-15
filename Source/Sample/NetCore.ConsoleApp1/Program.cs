@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
-using DMC.Logging;
-using Microsoft.Extensions.DependencyInjection;
-using Model;
+
 using DMC;
 using DMC.Injection;
+using DMC.Logging;
 using DMC.Logging.LoggingBinder;
+
+using Microsoft.Extensions.DependencyInjection;
+
+using NetCore.ConsoleApp1.Model;
 
 namespace NetCore.ConsoleApp1
 {
@@ -18,11 +18,11 @@ namespace NetCore.ConsoleApp1
             //Console.WriteLine("Hello World!");
             Console.Title = "NetCore.ConsoleApp1";
             IServiceCollection services = new ServiceCollection();
-            services.AddSingleton<ICacheLogger>((ctx) => new DynamicLoggingWrapper<ConsoleLogger>(new ConsoleLogger(),(io,message, ex, level) =>
-            { 
-                io.WriteLine(message, ex, level);
-                return true;
-            }
+            services.AddSingleton<ICacheLogger>((ctx) => new DynamicLoggingWrapper<ConsoleLogger>(new ConsoleLogger(), (io, message, ex, level) =>
+             {
+                 io.WriteLine(message, ex, level);
+                 return true;
+             }
             ));
             services.AddSingleton<ICacheConfig, CacheConfig>();
 
@@ -41,10 +41,8 @@ namespace NetCore.ConsoleApp1
             else
             {
                 Console.WriteLine("Invalidation Sucess ");
-
             }
             Console.ReadLine();
-
         }
     }
 }

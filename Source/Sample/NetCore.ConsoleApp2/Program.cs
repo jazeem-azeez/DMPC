@@ -1,10 +1,13 @@
 ﻿using System;
-using Microsoft.Extensions.DependencyInjection;
-using Model;
+
 using DMC;
 using DMC.Injection;
 using DMC.Logging;
 using DMC.Logging.LoggingBinder;
+
+using Microsoft.Extensions.DependencyInjection;
+using NetCore.ConsoleApp1;
+using NetCore.ConsoleApp1.Model;
 
 namespace NetCore.ConsoleApp2
 {
@@ -38,11 +41,8 @@ namespace NetCore.ConsoleApp2
             else
             {
                 Console.WriteLine("Invalidation Sucess ");
-
             }
             Console.ReadLine();
-
-
         }
     }
 }

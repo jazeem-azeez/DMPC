@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace NetCore.ConsoleApp1.Model
 {
     public class MyDummyType
     {

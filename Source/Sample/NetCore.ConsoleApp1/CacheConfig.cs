@@ -6,7 +6,7 @@ using DMC.Models;
 
 namespace NetCore.ConsoleApp1
 {
-    internal class CacheConfig : ICacheConfig
+    public class CacheConfig : ICacheConfig
     {
         public bool BackPlaneEnabled => true;
         public string ServiceBusConnectionString => @"Endpoint=sb://sb-use-nfy-dev-ss.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=cwVNrtJ1P+CCaGt3sWDkV/zr61pRTyIVMhtpHWq/sLI=";
@@ -27,6 +27,6 @@ namespace NetCore.ConsoleApp1
         }
         public bool IsRabbitCommnunicationChannelEnabled { get=>true; }
         public bool IsServiceBusCommnunicationChannelEnabled { get=>false; }
-         
+        public string RedisConnectionString => "localhost";
     }
 }

@@ -21,8 +21,8 @@ namespace DMC.CacheProvider.CacheStores
             this._cacheConfig = cacheConfig;
             this._cacheLogger = cacheLogger;
             long index = (typeof(T).FullName.Select(c => Convert.ToInt64(c)).Aggregate((cur, next) => cur + next)) % 16;
+            this._cacheLogger.LogAsync($"Connecting to RedisDB:{index}", System.Diagnostics.Tracing.EventLevel.Verbose);
             this.DB = redisFactory.Connection?.GetDatabase((int)index);
-            this._nonLockingRuntimeWrapper = new NonLockingRuntimeWrapper<T>(this._cacheLogger);
         }
 
         public bool Compact() => throw new NotSupportedException();

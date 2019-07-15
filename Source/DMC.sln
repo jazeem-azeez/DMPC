@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMC", "DMC\DMC.csproj", "{964479CF-57CD-4D94-9A1C-EEA1BAEE5C8C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCore.ConsoleApp1", "Sample\NetCore.ConsoleApp1\NetCore.ConsoleApp1.csproj", "{AAD33DA7-10CF-4F53-A1E1-C4EECE7736E3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCore.ConsoleApp2", "Sample\NetCore.ConsoleApp2\NetCore.ConsoleApp2.csproj", "{31C65C14-14F7-43C2-9887-7FF281FF62D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -15,6 +19,14 @@ Global
 		{964479CF-57CD-4D94-9A1C-EEA1BAEE5C8C}.Debug|x64.Build.0 = Debug|x64
 		{964479CF-57CD-4D94-9A1C-EEA1BAEE5C8C}.Release|x64.ActiveCfg = Release|x64
 		{964479CF-57CD-4D94-9A1C-EEA1BAEE5C8C}.Release|x64.Build.0 = Release|x64
+		{AAD33DA7-10CF-4F53-A1E1-C4EECE7736E3}.Debug|x64.ActiveCfg = Debug|x64
+		{AAD33DA7-10CF-4F53-A1E1-C4EECE7736E3}.Debug|x64.Build.0 = Debug|x64
+		{AAD33DA7-10CF-4F53-A1E1-C4EECE7736E3}.Release|x64.ActiveCfg = Release|x64
+		{AAD33DA7-10CF-4F53-A1E1-C4EECE7736E3}.Release|x64.Build.0 = Release|x64
+		{31C65C14-14F7-43C2-9887-7FF281FF62D5}.Debug|x64.ActiveCfg = Debug|x64
+		{31C65C14-14F7-43C2-9887-7FF281FF62D5}.Debug|x64.Build.0 = Debug|x64
+		{31C65C14-14F7-43C2-9887-7FF281FF62D5}.Release|x64.ActiveCfg = Release|x64
+		{31C65C14-14F7-43C2-9887-7FF281FF62D5}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

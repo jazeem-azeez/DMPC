@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Source\DMC\DMC.csproj" />
+    <ProjectReference Include="..\..\DMC\DMC.csproj" />
     <ProjectReference Include="..\NetCore.ConsoleApp1\NetCore.ConsoleApp1.csproj" />
   </ItemGroup>
 

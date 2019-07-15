@@ -34,12 +34,13 @@ namespace DMC.Implementations
         {
             this._cacheLogger = logger;
             this._cacheContextManager = cacheContextManager;
-            this._cacheStoreCollection = storeCollectionProvider.GetCacheStoreCollection() ;
+            this._cacheStoreCollection = storeCollectionProvider.GetCacheStoreCollection();
             this.minStoreIndex = 0;
-            this.maxStoreIndex = _cacheStoreCollection.Count;
+            this.maxStoreIndex = this._cacheStoreCollection.Count;
             this._cacheConfig = cacheConfig;
             this.FilterName = typeof(T).FullName;
             this._backPlane = backPlane;
+            this._nonLockingRuntimeWrapperForCallBacks = new NonLockingRuntimeWrapper<T>(this._cacheLogger);
             if (this._cacheConfig.BackPlaneEnabled)
             {
                 this._backPlane.SubscribeToBackPlanEvents<T>(this.FilterName, this.OnBackPlaneEvent);
@@ -85,15 +86,20 @@ namespace DMC.Implementations
 
         public StoreWrapper<T> Get(string key, int level, bool autoPropogateOrCachingEnabled)
         {
-            StoreWrapper<T> storeWrapper = this._cacheStoreCollection[level].GetEntry(key);
-            if (storeWrapper == default(StoreWrapper<T>) && level < this.maxStoreIndex)
+            StoreWrapper<T> storeWrapper = default(StoreWrapper<T>);
+            if (level < this.maxStoreIndex)
             {
-                storeWrapper = this.Get(key, level + 1, autoPropogateOrCachingEnabled);
-                if (autoPropogateOrCachingEnabled && storeWrapper != default(StoreWrapper<T>))
+                storeWrapper = this._cacheStoreCollection[level].GetEntry(key);
+                if (storeWrapper == default(StoreWrapper<T>))
                 {
-                    this._cacheStoreCollection[level].SetEntry(key, storeWrapper);
+                    storeWrapper = this.Get(key, level + 1, autoPropogateOrCachingEnabled);
+                    if (autoPropogateOrCachingEnabled && storeWrapper != default(StoreWrapper<T>))
+                    {
+                        this._cacheStoreCollection[level].SetEntry(key, storeWrapper);
+                    }
                 }
             }
+
             return storeWrapper;
         }
 

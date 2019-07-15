@@ -3,8 +3,20 @@ using System.Diagnostics.Tracing;
 
 namespace NetCore.ConsoleApp1
 {
-    internal class ConsoleLogger
+    public class ConsoleLogger
     {
-        internal void WriteLine(string message, Exception ex, EventLevel level) => Console.WriteLine(message, ex, level);
+        public void WriteLine(string message, Exception ex, EventLevel level)
+        {
+            try
+            {
+
+                Console.WriteLine($"message:{message}, ex:{ex}, level:{level}");
+            }
+            catch (Exception ex1)
+            {
+                Console.WriteLine(message);
+                Console.WriteLine($"{ex1}");
+            }
+        }
     }
 }
